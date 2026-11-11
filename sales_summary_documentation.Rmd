@@ -1,0 +1,68 @@
+---
+title: "Sales Summary Script Documentation"
+author: "Lujain Ibrahim"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+<!--
+AI Assistance Declaration: I used ChatGPT (GPT-6) for documentation planning,
+Markdown drafting, and formatting suggestions. Prompts used are recorded in
+AI_Appendix.md. I have successfully previewed/knitted this file and verified it against the
+actual R script. I am responsible for the accuracy and originality of this work.
+-->
+
+# Purpose
+
+This document explains the intended workflow of `sales_summary.R`[span_3](start_span)[span_3](end_span). The script reads a synthetic retail CSV file, validates expected columns, and summarizes units and sales value by product category and region[span_4](start_span)[span_4](end_span).
+
+## Inputs
+
+- `retail_sales.csv`: synthetic transaction-level data[span_5](start_span)[span_5](end_span).
+- Required columns: `order_id`, `date`, `category`, `region`, `units`, and `unit_price`[span_6](start_span)[span_6](end_span).
+
+## Outputs
+
+- A grouped summary containing category, region, total units, and total sales[span_7](start_span)[span_7](end_span).
+
+## Dependencies
+
+Uses `readr` for importing CSV files and `dplyr` for data transformation[span_8](start_span)[span_8](end_span).
+
+```{r setup, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+Example Workflow
+​1. Read the input data
+
+sales_data <- read_csv("retail_sales.csv")
+
+2. Check the required columns
+required_columns <- c(
+  "order_id", "date", "category",
+  "region", "units", "unit_price"
+)
+
+stopifnot(all(required_columns %in% names(sales_data)))
+3. Create the summary
+sales_summary <- sales_data %>%
+  group_by(category, region) %>%
+  summarise(
+    total_units = sum(units, na.rm = TRUE),
+    total_sales = sum(units * unit_price, na.rm = TRUE),
+    .groups = "drop"
+  )
+4. Review the output
+print(sales_summary)
+
+Validation Notes
+​Confirmed CSV file format and column names.
+​Checked data types for date, units, and unit_price.
+​Inspected missing values.
+​Successfully knitted the .Rmd file in RStudio.
+
+
+
